@@ -1,0 +1,8 @@
+{
+  "name": "software-craftsmanship",
+  "version": "1.0.0",
+  "description": "Clean Code (Martin, 2009) and GoF Design Patterns (Gamma et al., 1995) as 13 Claude Code skills: names, functions, comments, classes, errors, tests, concurrency, smells, and creational/structural/behavioral patterns.",
+  "author": { "name": "Creangel Technologies" },
+  "license": "MIT",
+  "keywords": ["clean-code", "design-patterns", "refactoring", "gof", "code-review"]
+}
