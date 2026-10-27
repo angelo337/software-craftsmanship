@@ -7,6 +7,10 @@ It ships **13 skills**. Claude loads them automatically when your request matche
 > The skills paraphrase the books. They do not reproduce book text or book code, and every code example is original. Buy the books for the full treatment.
 
 ---
+claude plugin marketplace add angelo337/software-craftsmanship
+claude plugin install software-craftsmanship@creangel-craftsmanship
+claude plugin list
+---
 
 ## Contents
 
