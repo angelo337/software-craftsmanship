@@ -1,0 +1,12 @@
+{
+  "name": "creangel-craftsmanship",
+  "description": "Software craftsmanship skills for Claude Code by Creangel Technologies",
+  "owner": { "name": "Creangel Technologies" },
+  "plugins": [
+    {
+      "name": "software-craftsmanship",
+      "source": "./plugins/software-craftsmanship",
+      "description": "Clean Code + GoF Design Patterns: 13 skills for writing, reviewing and refactoring code"
+    }
+  ]
+}
