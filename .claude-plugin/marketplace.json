@@ -6,7 +6,7 @@
     {
       "name": "software-craftsmanship",
       "source": "./plugins/software-craftsmanship",
-      "description": "Clean Code + GoF Design Patterns: 13 skills for writing, reviewing and refactoring code"
+      "description": "Clean Code + GoF Design Patterns + Refactoring + Clean Architecture: 29 skills for writing, reviewing and refactoring code"
     }
   ]
 }

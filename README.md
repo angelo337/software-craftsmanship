@@ -1,17 +1,11 @@
 # Software Craftsmanship for Claude Code
 
-A Claude Code plugin that teaches Claude to write, review and refactor code the way two classic books describe it: **Clean Code** (Martin, 2009) and **Design Patterns** (Gamma et al., 1995, the "Gang of Four" or GoF).
+A Claude Code plugin that teaches Claude to write, review and refactor code the way two classic books describe it: **Clean Code** (Martin, 2009), **Design Patterns** (Gamma et al., 1995, the "Gang of Four" or GoF) **Refactoring** (Fowler et al., 1999) and **Clean Architecture** (Martin, 2017).
 
-It ships **13 skills**. Claude loads them automatically when your request matches a skill's description (for example "refactor this class", "which pattern fits here?", "review this PR"), so you rarely need to invoke them by hand. Skill descriptions also respond to Spanish phrases such as *código limpio*, *patrones de diseño* and *refactorizar*.
+It ships **29 skills**. Claude loads them automatically when your request matches a skill's description (for example "refactor this class", "which pattern fits here?", "review this PR"), so you rarely need to invoke them by hand. Skill descriptions also respond to Spanish phrases such as *código limpio*, *patrones de diseño* and *refactorizar*.
 
 > The skills paraphrase the books. They do not reproduce book text or book code, and every code example is original. Buy the books for the full treatment.
 
----
-```
-claude plugin marketplace add angelo337/software-craftsmanship
-claude plugin install software-craftsmanship@creangel-craftsmanship
-claude plugin list
-```
 ---
 
 ## Contents
@@ -20,6 +14,8 @@ claude plugin list
 - [Features by skill](#features-by-skill)
   - [Clean Code (9 skills)](#clean-code-9-skills)
   - [Design Patterns (4 skills)](#design-patterns-4-skills)
+  - [Refactoring (10 skills)](#refactoring-10-skills)
+  - [Clean Architecture (6 skills)](#clean-architecture-6-skills)
 - [Working modes](#working-modes)
 - [Language support](#language-support)
 - [Installation](#installation)
@@ -39,6 +35,8 @@ claude plugin list
 |---|---|---|
 | Clean Code | 9 | Readable names, small single-purpose functions, honest comments, cohesive classes, explicit error handling, fast and readable tests, safer concurrency, a smell catalog for reviews and refactors |
 | Design Patterns | 4 | Detect patterns in existing code, refactor toward the right one, or choose one for a new design, across all 23 GoF patterns |
+| Refactoring | 10 | A safe procedure for restructuring code, a smell-to-cure map (22 smells) and the full catalog of 72 refactorings with mechanics, examples and language notes |
+| Clean Architecture | 6 | SOLID and paradigms, component cohesion/coupling and metrics, boundary placement, the dependency rule and layers, treating database/web/frameworks as details, package structure |
 
 ---
 
@@ -132,6 +130,57 @@ Chain of Responsibility, Command, Interpreter, Iterator, Mediator, Memento, Obse
 - One reference file per pattern with the same sections as above.
 - A behavioral language cheat sheet (for example Strategy as a function, Iterator as a generator, Observer as events or signals, Visitor as pattern matching on sum types).
 
+### Refactoring (10 skills)
+
+Based on Fowler et al. (1999). Behavior never changes during a refactoring; the "two hats" rule (adding function vs refactoring) is built in.
+
+#### `refactoring` (entry point and router)
+- Operating procedure: safety net first, find the reason, diagnose smells, pick the refactoring, small steps with tests after each, rule of three, stop when the goal is met, report.
+- Ground rules for published interfaces (keep old signature delegating and deprecated), databases, performance, deadlines and tooling.
+- `references/catalog-index.md`: all 72 refactorings grouped by chapter skill with a one-line trigger; `references/source.md`: chapter map.
+
+#### `refactoring-bad-smells`
+- Detects 22 smells (Duplicated Code, Long Method, Large Class, Long Parameter List, Divergent Change, Shotgun Surgery, Feature Envy, Data Clumps, Primitive Obsession, Switch Statements, Parallel Inheritance Hierarchies, Lazy Class, Speculative Generality, Temporary Field, Message Chains, Middle Man, Inappropriate Intimacy, Alternative Classes with Different Interfaces, Incomplete Library Class, Data Class, Refused Bequest, Comments).
+- Quick symptom-to-cure table plus a detailed reference (`smells-to-refactorings.md`) and review output format (location, smell, why it hurts, cure, priority).
+
+#### `refactoring-building-tests`
+- How to build the self-testing safety net before refactoring: automatic self-checking tests, risk-driven coverage, boundary and error cases, isolated fixtures, characterization tests for legacy code, one command to run everything.
+
+#### Catalog skills (one reference card per refactoring: intent, use when, don't use when, mechanics, Python before/after example, language notes, related refactorings and smells)
+- `refactoring-composing-methods` (9): Extract Method, Inline Method, Inline Temp, Replace Temp with Query, Introduce Explaining Variable, Split Temporary Variable, Remove Assignments to Parameters, Replace Method with Method Object, Substitute Algorithm.
+- `refactoring-moving-features` (8): Move Method, Move Field, Extract Class, Inline Class, Hide Delegate, Remove Middle Man, Introduce Foreign Method, Introduce Local Extension.
+- `refactoring-organizing-data` (16): Self Encapsulate Field, Replace Data Value with Object, Change Value to Reference, Change Reference to Value, Replace Array with Object, Duplicate Observed Data, Change Unidirectional Association to Bidirectional (and back), Replace Magic Number with Symbolic Constant, Encapsulate Field, Encapsulate Collection, Replace Record with Data Class, Replace Type Code with Class / Subclasses / State-Strategy, Replace Subclass with Fields.
+- `refactoring-conditionals` (8): Decompose Conditional, Consolidate Conditional Expression, Consolidate Duplicate Conditional Fragments, Remove Control Flag, Replace Nested Conditional with Guard Clauses, Replace Conditional with Polymorphism, Introduce Null Object, Introduce Assertion.
+- `refactoring-method-calls` (15): Rename Method, Add Parameter, Remove Parameter, Separate Query from Modifier, Parameterize Method, Replace Parameter with Explicit Methods, Preserve Whole Object, Replace Parameter with Method, Introduce Parameter Object, Remove Setting Method, Hide Method, Replace Constructor with Factory Method, Encapsulate Downcast, Replace Error Code with Exception, Replace Exception with Test.
+- `refactoring-generalization` (12): Pull Up Field/Method/Constructor Body, Push Down Method/Field, Extract Subclass, Extract Superclass, Extract Interface, Collapse Hierarchy, Form Template Method, Replace Inheritance with Delegation, Replace Delegation with Inheritance.
+
+#### `refactoring-big-refactorings`
+- How to run large, long-lived restructurings incrementally with team agreement, plus four reference cards: Tease Apart Inheritance, Convert Procedural Design to Objects, Separate Domain from Presentation, Extract Hierarchy.
+- Reality check: when to rewrite instead, deadlines, hard-to-refactor designs, tooling criteria and why developers resist.
+
+### Clean Architecture (6 skills)
+
+Based on Martin (2017). Two workflows are built in: review an existing system, or design a new one; both aim at cheap change and deferred decisions.
+
+#### `clean-architecture` (entry point and router)
+- Core ideas: cost of change as the quality measure, behavior vs structure, policy vs details, keeping options open, decoupling by layers and use cases, true vs accidental duplication, decoupling modes (source, deployment, service).
+- Routing table to the five skills below.
+
+#### `clean-architecture-design-principles`
+- Structured, object-oriented and functional paradigms as constraints, plus SRP, OCP, LSP, ISP and DIP, with one reference file per principle.
+
+#### `clean-architecture-components`
+- Component cohesion (REP, CCP, CRP), acyclic dependencies, stable dependencies, stable abstractions, and instability/abstractness metrics.
+
+#### `clean-architecture-boundaries`
+- Where to draw boundaries, how to cross them, Humble Object, partial boundaries, the Main component, services as boundaries, and the test boundary.
+
+#### `clean-architecture-layers`
+- Dependency rule, entities and use cases, policy levels, screaming architecture, a flow-of-control example and an architecture audit checklist.
+
+#### `clean-architecture-details-and-packaging`
+- Database, web, GUI, frameworks and embedded as details; a video-sales case study; package by layer, feature, port/adapter or component.
+
 ---
 
 ## Working modes
@@ -142,7 +191,7 @@ Chain of Responsibility, Command, Interpreter, Iterator, Mediator, Memento, Obse
 | **B. Refactor** | "Replace this big switch", "decouple creation from use" | Applies small behaviour-preserving steps, with tests green after each one |
 | **C. Design** | "Design a notification system", "how should I structure plugins?" | Names the force, picks the lightest option, sketches the participants, then writes idiomatic code |
 
-For general code quality the `clean-code` skills follow a similar loop: understand, make it work, make it clean, verify, and report what changed.
+For general code quality the `clean-code` skills follow a similar loop: understand, make it work, make it clean, verify, and report what changed. The `refactoring` skills add the strict procedure: tests first, one refactoring at a time, tests after each step.
 
 ---
 
@@ -195,10 +244,10 @@ Implement a CSV importer for orders with validation and tests.
 → clean-code, names, functions, errors-boundaries, tests
 
 Review this pull request for code smells and tell me what to fix first.
-→ clean-code-refactoring-smells (findings with smell codes and severity)
+→ clean-code-refactoring-smells and refactoring-bad-smells (findings with smell codes and severity)
 
 This 400-line class handles billing, emails and PDFs. Help me split it.
-→ clean-code-objects-classes, then refactoring-smells
+→ clean-code-objects-classes, refactoring-moving-features (Extract Class)
 
 I have a giant switch on payment type that appears in five places.
 → design-patterns → patterns-behavioral (Strategy) or polymorphism
@@ -208,6 +257,9 @@ What design patterns does src/notifications use, and what is missing?
 
 Design a plugin system where third parties add exporters.
 → design-patterns (mode C) → creational and behavioral skills
+
+Which refactoring removes a 12-parameter method signature safely?
+→ refactoring-method-calls (Introduce Parameter Object, Preserve Whole Object)
 
 Explain the difference between Decorator and Proxy with an example in TypeScript.
 → patterns-structural
@@ -232,10 +284,13 @@ Bump `version` in `plugins/software-craftsmanship/.claude-plugin/plugin.json` on
 software-craftsmanship-marketplace/
 ├── .claude-plugin/marketplace.json        # marketplace: creangel-craftsmanship
 ├── plugins/software-craftsmanship/
-│   ├── .claude-plugin/plugin.json         # plugin manifest (v1.0.0)
+│   ├── .claude-plugin/plugin.json         # plugin manifest (v1.2.0)
 │   └── skills/
 │       ├── clean-code/                    # + 8 clean-code-* skills
 │       ├── clean-code-refactoring-smells/references/smells-catalog.md
+│       ├── clean-architecture/ + 5 clean-architecture-* skills
+│       ├── refactoring/references/            # catalog index + source
+│       ├── refactoring-*/references/          # 72 refactoring cards in 6 chapter skills + smells + big refactorings
 │       ├── design-patterns/references/    # selection, signals, language mapping, report, source
 │       ├── patterns-creational/references/   # 5 pattern files + language mapping
 │       ├── patterns-structural/references/   # 7 pattern files + language mapping
@@ -269,6 +324,7 @@ software-craftsmanship-marketplace/
 - Martin, R. C. (2009). *Clean code: A handbook of agile software craftsmanship*. Prentice Hall.
 - Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1995). *Design patterns: Elements of reusable object-oriented software*. Addison-Wesley.
 - Fowler, M., Beck, K., Brant, J., Opdyke, W., & Roberts, D. (1999). *Refactoring: Improving the design of existing code*. Addison-Wesley.
+- Martin, R. C. (2017). *Clean architecture: A craftsman's guide to software structure and design*. Prentice Hall.
 - Anthropic. (n.d.). *Create and distribute a plugin marketplace*. Claude Code Docs. https://code.claude.com/docs/en/plugin-marketplaces
 
 ## License
